@@ -3,6 +3,7 @@ package ar.edu.unlam.pb2.Equipo2;
 import java.util.HashSet;
 import java.util.Set;
 
+import ar.edu.unlam.pb2.Equipo2.JugadorNoEncontradoExecption;
 import ar.edu.unlam.pb2.Equipo2.PartidoNoEncontradoExeption;
 
 public class Torneo {
@@ -52,10 +53,24 @@ public class Torneo {
 		return jugadores;
 	}
 	
-	public void registrarGol(Integer numeroPartido, Integer numeroCamiseta, String Equipo, Integer minuto) throws PartidoNoEncontradoExeption {
+	public void registrarGol(Integer numeroPartido, Integer numeroCamiseta, String Equipo, Integer minuto) throws PartidoNoEncontradoExeption, JugadorNoEncontradoExecption {
 		Partido partido = buscarPartidoPorNumero(numeroPartido);
+		Jugador jugador = null;
+		if(Equipo.equals("local")) 
+			jugador=buscarJugador(numeroCamiseta, partido.getLocal());
+		if(Equipo.equals("visitante")) 
+			jugador=buscarJugador(numeroCamiseta, partido.getVisitante());
+			
 		
 	}
+
+	private Jugador buscarJugador(Integer numeroCamiseta, Set<Jugador> equipo) throws JugadorNoEncontradoExecption {
+		for(Jugador jugador : equipo) {
+		if(jugador.getNumeroCamiseta().equals(numeroCamiseta));
+		return jugador;
+	}
+	throw new JugadorNoEncontradoExecption();
+}
 
 	private Partido buscarPartidoPorNumero(Integer numeroPartido) throws PartidoNoEncontradoExeption{
 		for(Partido partido : this.partidos)
